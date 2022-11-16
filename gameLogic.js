@@ -1,7 +1,7 @@
 var candies = ["blue", "purple", "red", "yellow", "orange", "green"];
 var board = [];
-var rows = 12;
-var columns = 12;
+var rows = 10;
+var columns = 10;
 var score = 0;
 var invalidTurns, validTurn = 0;
 var allowedMoves = 20;
