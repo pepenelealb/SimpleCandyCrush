@@ -8,7 +8,7 @@ var score = 0;
 window.onload = function () {
     startGame();
     window.setInterval(function () {
-        crushCandy();
+        popCandy();
         slideCandy();
         spawnCandy();
     });
@@ -42,14 +42,15 @@ function randomCandy() {
     return candies[Math.floor(Math.random() * candies.length)];
 }
 
-function crushCandy(){
-    popThreeCandy();
+function popCandy() {
+    popFourCandys();
+    popThreeCandys();
     document.getElementById("score").innerText = score;
 }
-function slideCandy(){
+function slideCandy() {
     for (let c = 0; c < columns; c++) {
         let ind = rows - 1;
-        for (let r = columns-1; r >= 0; r--) {
+        for (let r = columns - 1; r >= 0; r--) {
             if (!board[r][c].src.includes("blank")) {
                 board[ind][c].src = board[r][c].src;
                 ind -= 1;
@@ -61,71 +62,120 @@ function slideCandy(){
         }
     }
 }
-function spawnCandy(){
-    for (let c = 0; c < columns;  c++) {
+function spawnCandy() {
+    for (let c = 0; c < columns; c++) {
         if (board[0][c].src.includes("blank")) {
             board[0][c].src = "./images/" + randomCandy() + ".png";
         }
     }
 }
-function checkValid(){
- //check rows
- for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < columns-2; c++) {
-        let candy1 = board[r][c];
-        let candy2 = board[r][c+1];
-        let candy3 = board[r][c+2];
-        if (candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) {
-            return true;
-        }
-    }
-}
-
-//check columns
-for (let c = 0; c < columns; c++) {
-    for (let r = 0; r < rows-2; r++) {
-        let candy1 = board[r][c];
-        let candy2 = board[r+1][c];
-        let candy3 = board[r+2][c];
-        if (candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) {
-            return true;
-        }
-    }
-}
-
-return false;
-}
-//#region Crush candy functions
-function popThreeCandy(){
+function checkValid() {
     //check rows
     for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < columns-2; c++) {
+        for (let c = 0; c < columns - 2; c++) {
             let candy1 = board[r][c];
-            let candy2 = board[r][c+1];
-            let candy3 = board[r][c+2];
+            let candy2 = board[r][c + 1];
+            let candy3 = board[r][c + 2];
             if (candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) {
-                candy1.src = "./images/blank.png";
-                candy2.src = "./images/blank.png";
-                candy3.src = "./images/blank.png";
-                score += 30;
+                return true;
             }
         }
     }
 
     //check columns
     for (let c = 0; c < columns; c++) {
-        for (let r = 0; r < rows-2; r++) {
+        for (let r = 0; r < rows - 2; r++) {
             let candy1 = board[r][c];
-            let candy2 = board[r+1][c];
-            let candy3 = board[r+2][c];
+            let candy2 = board[r + 1][c];
+            let candy3 = board[r + 2][c];
+            if (candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+//#region Crush candy functions
+function popThreeCandys() {
+    //check rows
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < columns - 2; c++) {
+            let candy1 = board[r][c];
+            let candy2 = board[r][c + 1];
+            let candy3 = board[r][c + 2];
             if (candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) {
                 candy1.src = "./images/blank.png";
                 candy2.src = "./images/blank.png";
                 candy3.src = "./images/blank.png";
                 score += 30;
+                console.log("trei")
             }
         }
     }
+
+    //check columns
+    for (let c = 0; c < columns; c++) {
+        for (let r = 0; r < rows - 2; r++) {
+            let candy1 = board[r][c];
+            let candy2 = board[r + 1][c];
+            let candy3 = board[r + 2][c];
+            if (candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) {
+                candy1.src = "./images/blank.png";
+                candy2.src = "./images/blank.png";
+                candy3.src = "./images/blank.png";
+                score += 30;
+                console.log("trei")
+            }
+        }
+    }
+   
+}
+function popFourCandys() {
+    //check rows
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < columns - 3; c++) {
+            let candy1 = board[r][c];
+            let candy2 = board[r][c + 1];
+            let candy3 = board[r][c + 2];
+            let candy4 = board[r][c + 3];
+            if (candy1.src == candy2.src
+                && candy2.src == candy3.src
+                && candy3.src == candy4.src
+                && !candy1.src.includes("blank")) {
+
+                candy1.src = "./images/blank.png";
+                candy2.src = "./images/blank.png";
+                candy3.src = "./images/blank.png";
+                candy4.src = "./images/blank.png";
+                score += 40;
+                console.log("patru")
+            }
+        }
+    }
+
+    //check columns
+    for (let c = 0; c < columns; c++) {
+        for (let r = 0; r < rows - 3; r++) {
+            let candy1 = board[r][c];
+            let candy2 = board[r + 1][c];
+            let candy3 = board[r + 2][c];
+            let candy4 = board[r + 3][c];
+
+            if (candy1.src == candy2.src 
+                && candy2.src == candy3.src
+                && candy3.src == candy4.src  
+                && !candy1.src.includes("blank")) {
+                candy1.src = "./images/blank.png";
+                candy2.src = "./images/blank.png";
+                candy3.src = "./images/blank.png";
+                candy4.src = "./images/blank.png";
+                score += 40;
+                console.log("patru")
+            }
+        }
+    }
+  
 }
 //#endregion
 //#region event listener functions
@@ -164,11 +214,11 @@ function dragEnd() {
     let r2 = parseInt(otherCoords[0]);
     let c2 = parseInt(otherCoords[1]);
 
-    let moveLeft = c2 == c-1 && r == r2;
-    let moveRight = c2 == c+1 && r == r2;
+    let moveLeft = c2 == c - 1 && r == r2;
+    let moveRight = c2 == c + 1 && r == r2;
 
-    let moveUp = r2 == r-1 && c == c2;
-    let moveDown = r2 == r+1 && c == c2;
+    let moveUp = r2 == r - 1 && c == c2;
+    let moveDown = r2 == r + 1 && c == c2;
 
     let isAdjacent = moveLeft || moveRight || moveUp || moveDown;
 
@@ -183,7 +233,7 @@ function dragEnd() {
             let currImg = currTile.src;
             let otherImg = otherTile.src;
             currTile.src = otherImg;
-            otherTile.src = currImg;    
+            otherTile.src = currImg;
         }
     }
 }
