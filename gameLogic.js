@@ -3,7 +3,8 @@ var board = [];
 var rows = 12;
 var columns = 12;
 var score = 0;
-
+var invalidTurns, validTurn = 0;
+var allowedMoves = 20;
 
 window.onload = function () {
     startGame();
@@ -11,7 +12,7 @@ window.onload = function () {
         popCandy();
         slideCandy();
         spawnCandy();
-    });
+    }, 100);
 }
 
 function startGame() {
@@ -46,6 +47,7 @@ function popCandy() {
     popFourCandys();
     popThreeCandys();
     document.getElementById("score").innerText = score;
+    document.getElementById("turns").innerText = validTurn;
 }
 function slideCandy() {
     for (let c = 0; c < columns; c++) {
@@ -129,7 +131,7 @@ function popThreeCandys() {
             }
         }
     }
-   
+
 }
 function popFourCandys() {
     //check rows
@@ -162,9 +164,9 @@ function popFourCandys() {
             let candy3 = board[r + 2][c];
             let candy4 = board[r + 3][c];
 
-            if (candy1.src == candy2.src 
+            if (candy1.src == candy2.src
                 && candy2.src == candy3.src
-                && candy3.src == candy4.src  
+                && candy3.src == candy4.src
                 && !candy1.src.includes("blank")) {
                 candy1.src = "./images/blank.png";
                 candy2.src = "./images/blank.png";
@@ -175,7 +177,6 @@ function popFourCandys() {
             }
         }
     }
-  
 }
 //#endregion
 //#region event listener functions
@@ -230,11 +231,24 @@ function dragEnd() {
 
         let validMove = checkValid();
         if (!validMove) {
+
             let currImg = currTile.src;
             let otherImg = otherTile.src;
             currTile.src = otherImg;
             otherTile.src = currImg;
+
+
+        } else {
+
+            validTurn++;
+            let remaningMoves = allowedMoves - validTurn;
+            document.getElementById("remaningTurns").innerText = remaningMoves;
+            if (remaningMoves == 0) 
+                document.getElementById("board").innerText = "Game over fraier! Scor: " + score;
         }
+
     }
+    invalidTurns++;
+
 }
 //#endregion
