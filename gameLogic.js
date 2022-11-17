@@ -7,6 +7,7 @@ var invalidTurns, validTurn = 0;
 var allowedMoves = 20;
 
 window.onload = function () {
+    document.getElementById("startGame").click();
     startGame();
     window.setInterval(function () {
         popCandy();
@@ -112,6 +113,7 @@ function popThreeCandys() {
                 candy3.src = "./images/blank.png";
                 score += 30;
                 console.log("trei")
+                playSoundEffect("popThreeCandys");
             }
         }
     }
@@ -128,6 +130,7 @@ function popThreeCandys() {
                 candy3.src = "./images/blank.png";
                 score += 30;
                 console.log("trei")
+                playSoundEffect("popThreeCandys");
             }
         }
     }
@@ -152,6 +155,7 @@ function popFourCandys() {
                 candy4.src = "./images/blank.png";
                 score += 40;
                 console.log("patru")
+                playSoundEffect("popFourCandys");
             }
         }
     }
@@ -174,6 +178,7 @@ function popFourCandys() {
                 candy4.src = "./images/blank.png";
                 score += 40;
                 console.log("patru")
+                playSoundEffect("popFourCandys");
             }
         }
     }
@@ -242,13 +247,38 @@ function dragEnd() {
 
             validTurn++;
             let remaningMoves = allowedMoves - validTurn;
-            document.getElementById("remaningTurns").innerText = remaningMoves;
-            if (remaningMoves == 0) 
+            playSoundEffect("popThreeCandys");
+            //document.getElementById("remaningTurns").innerText = remaningMoves;
+            if (remaningMoves == 0) {
                 document.getElementById("board").innerText = "Game over fraier! Scor: " + score;
+                playSoundEffect("gameOver");
+            }
         }
 
     }
-    invalidTurns++;
 
+    invalidTurns++;
+}
+//#endregion
+
+//#region Sound Effects
+
+function playSoundEffect(effect) {
+    var soundEfectPop;
+    switch (effect) {
+        case "popThreeCandys":
+            soundEfectPop = new Audio("./sounds/popThreeCandys.wav")
+            break;
+        case "popFourCandys":
+            soundEfectPop = new Audio("./sounds/popFourCandys.wav")
+            break;
+        case "gameOver":
+            soundEfectPop = new Audio("./sounds/gameOver.wav")
+            break;
+        default:
+            alert("sound effect dosnt exist")
+            break
+    }
+    soundEfectPop.play();
 }
 //#endregion
