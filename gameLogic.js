@@ -4,11 +4,14 @@ var rows = 10;
 var columns = 10;
 var score = 0;
 var invalidTurns, validTurn = 0;
-var allowedMoves = 20;
+var allowedMoves = 5; //turns
+var timeleft = 1000; //seconds
 
 window.onload = function () {
-    document.getElementById("startGame").click();
+    getOS();
+    document.getElementById("remaningTurns").innerText = allowedMoves;
     startGame();
+    timer();
     window.setInterval(function () {
         popCandy();
         slideCandy();
@@ -17,6 +20,7 @@ window.onload = function () {
 }
 
 function startGame() {
+
     for (let r = 0; r < rows; r++) {
         let row = [];
         for (let c = 0; c < columns; c++) {
@@ -26,6 +30,8 @@ function startGame() {
             tile.src = "./images/" + randomCandy() + ".png";
 
             //DRAG FUNCTIONALITY
+            // // let opSys = getOS();
+            // // if (opSys == "Windows" || opSys == "Mac OS" || opSys == "Linux") {
             tile.addEventListener("dragstart", dragStart); //click on a candy, initialize drag process
             tile.addEventListener("dragover", dragOver);  //clicking on candy, moving mouse to drag the candy
             tile.addEventListener("dragenter", dragEnter); //dragging candy onto another candy
@@ -33,12 +39,34 @@ function startGame() {
             tile.addEventListener("drop", dragDrop); //dropping a candy over another candy
             tile.addEventListener("dragend", dragEnd); //after drag process completed, we swap candies
 
+            // // }
+            // // else {
+            // tile.addEventListener("touchstart", dragStart, false);
+            // tile.addEventListener("touchend", dragEnd, false);
+            // tile.addEventListener("touchcancel", dragOver, false);
+            // tile.addEventListener("touchleave", dragOver, false);
+            // tile.addEventListener("touchmove", dragDrop, false);
+
+            // //}
+
             document.getElementById("board").append(tile);
             row.push(tile);
         }
         board.push(row);
     }
     console.log(board);
+}
+
+function timer() {
+    var downloadTimer = setInterval(function () {
+        if (timeleft <= 0) {
+            clearInterval(downloadTimer);
+            gameOverEffects();
+        } else {
+            document.getElementById("countdown").innerHTML = timeleft + " seconds remaining";
+        }
+        timeleft -= 1;
+    }, 1000);
 }
 function randomCandy() {
     return candies[Math.floor(Math.random() * candies.length)];
@@ -203,11 +231,11 @@ function dragLeave() {
 }
 
 function dragDrop() {
+   // debugger
     //this refers to the target tile that was dropped on
     otherTile = this;
 }
 function dragEnd() {
-
     if (currTile.src.includes("blank") || otherTile.src.includes("blank")) {
         return;
     }
@@ -246,12 +274,11 @@ function dragEnd() {
         } else {
 
             validTurn++;
-            let remaningMoves = allowedMoves - validTurn;
+            var rTurns = allowedMoves - validTurn;
             playSoundEffect("popThreeCandys");
-            //document.getElementById("remaningTurns").innerText = remaningMoves;
-            if (remaningMoves == 0) {
-                document.getElementById("board").innerText = "Game over fraier! Scor: " + score;
-                playSoundEffect("gameOver");
+            document.getElementById("remaningTurns").innerText = rTurns;
+            if (rTurns == 0) {
+                gameOverEffects();
             }
         }
 
@@ -260,9 +287,11 @@ function dragEnd() {
     invalidTurns++;
 }
 //#endregion
-
 //#region Sound Effects
-
+function gameOverEffects() {
+    document.getElementById("board").innerText = "Game over fraier! Scor: " + score;
+    playSoundEffect("gameOver");
+}
 function playSoundEffect(effect) {
     var soundEfectPop;
     switch (effect) {
@@ -280,5 +309,29 @@ function playSoundEffect(effect) {
             break
     }
     soundEfectPop.play();
+}
+//#endregion
+//#region Misc
+function getOS() {
+    var userAgent = window.navigator.userAgent,
+        platform = window.navigator.platform,
+        macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
+        windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
+        iosPlatforms = ['iPhone', 'iPad', 'iPod'],
+        os = null;
+
+    if (macosPlatforms.indexOf(platform) !== -1) {
+        os = 'Mac OS';
+    } else if (iosPlatforms.indexOf(platform) !== -1) {
+        os = 'iOS';
+    } else if (windowsPlatforms.indexOf(platform) !== -1) {
+        os = 'Windows';
+    } else if (/Android/.test(userAgent)) {
+        os = 'Android';
+    } else if (!os && /Linux/.test(platform)) {
+        os = 'Linux';
+    }
+
+    return os;
 }
 //#endregion
