@@ -44,8 +44,8 @@ function startGame() {
             // tile.addEventListener("touchstart", dragStart, false);
             // tile.addEventListener("touchend", dragEnd, false);
             // tile.addEventListener("touchcancel", dragOver, false);
-            // tile.addEventListener("touchleave", dragOver, false);
-            // tile.addEventListener("touchmove", dragDrop, false);
+            // tile.addEventListener("touchleave", touchEndDrag, false);
+            // tile.addEventListener("touchmove", touchEndDrag, false);
 
             // //}
 
@@ -214,6 +214,7 @@ function popFourCandys() {
 //#endregion
 //#region event listener functions
 function dragStart() {
+   // debugger
     //this refers to tile that was clicked on for dragging
     currTile = this;
 }
@@ -231,7 +232,13 @@ function dragLeave() {
 }
 
 function dragDrop() {
-   // debugger
+  //  debugger
+    //this refers to the target tile that was dropped on
+    otherTile = this;
+}
+function touchEndDrag() {
+    debugger
+    let left = 
     //this refers to the target tile that was dropped on
     otherTile = this;
 }
